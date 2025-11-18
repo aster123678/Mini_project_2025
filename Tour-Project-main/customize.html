@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Package - Tour & Travel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo"><i class="fas fa-hiking"></i> travel.com</a>
+        <nav class="navbar">
+            <div id="nav-close" class="fas fa-times"></div>
+            <a href="index.html#home">home</a>
+            <a href="index.html#category">Adventures</a>
+            <a href="index.html#packages">packages</a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle">contact</a>
+                <div class="dropdown-menu">
+                    <a href="tel:+9188888888">Call: +9188888888</a>
+                    <a href="mailto:@gmail.com">Email: @gmail.com</a>
+                </div>
+            </div>
+        </nav>
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div> 
+            <div id="search-btn" class="fas fa-search"></div>
+        </div>
+    </header>
+
+    <!-- Search Form -->
+    <div class="search-form">
+        <div id="close-search" class="fas fa-times"></div>
+        <form>
+            <input type="search" placeholder="Search here..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+    </div>
+
+    <!-- Customize Package -->
+    <section class="customize-package">
+        <h1 class="heading">Customize Your Own Package</h1>
+        <p class="customize-description">Tell us about your dream trip, and we'll predict a personalized package price for you!</p>
+
+        <form id="customize-form">
+
+            <label for="destination">Destination:</label>
+            <select id="destination" required>
+                <option value="">Select Destination</option>
+                <option value="manali">Manali</option>
+                <option value="goa">Goa</option>
+                <option value="delhi">Delhi</option>
+                <option value="jaipur">Jaipur</option>
+                <option value="kerala">Kerala</option>
+                <option value="darjeeling">Darjeeling</option>
+            </select>
+
+            <label for="duration">Duration (days):</label>
+            <input type="number" id="duration" min="1" max="30" required>
+
+            <label for="people">Number of People:</label>
+            <input type="number" id="people" min="1" max="20" required>
+
+            <label>Activities:</label>
+            <div id="activities-container" class="activities">
+                <!-- Activities will be populated dynamically -->
+            </div>
+
+            <button type="submit" class="btn">Get Price Prediction</button>
+
+            <!-- GO BACK BUTTON -->
+            <a href="index.html" class="back-btn">⬅ Go Back to Main Page</a>
+
+        </form>
+
+        <div id="price-result" style="display:none;">
+            <h3>Estimated Price: <span id="estimated-price"></span></h3>
+            <p>This is a predicted price based on your selections. Contact us for exact quotes!</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+        <div class="box-container">
+
+            <div class="box">
+                <h3>Quick links</h3>
+                <a href="index.html#home">home</a>    
+                <a href="index.html#packages">packages</a>
+                <a href="#query">query</a>
+            </div>
+
+            <div class="box">
+                <h3>extra links</h3>
+                <a href="#contact">ask questions</a>
+                <a href="#">terms of use</a>
+                <a href="#">privacy policy</a>
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="tel:+918888888888"><i class="fas fa-phone"></i> +91  8888888888</a>
+                <a href="mailto:@gmail.com"><i class="fas fa-envelope"></i> @gmail.com</a>
+                <a href="#"><i class="fas fa-map"></i> Mathura, India - 281001</a>
+            </div>
+
+            <div class="box">
+                <h3>follow us</h3>
+                <a><i class="fab fa-facebook-f"></i> facebook</a>
+                <a><i class="fab fa-instagram"></i> instagram</a>
+                <!-- <a><i class="fab fa-linkedin"></i> linkedin</a>
+                <a><i class="fab fa-github"></i> github</a> -->
+            </div>
+
+        </div>
+
+        <div class="credit">created by <span>yash srivastav</span> | all rights reserved!</div>
+    </section>
+
+    <script src="js/script.js"></script>
+    <script>
+        const customizeForm = document.getElementById('customize-form');
+        const priceResult = document.getElementById('price-result');
+        const estimatedPrice = document.getElementById('estimated-price');
+        const destinationSelect = document.getElementById('destination');
+        const activitiesContainer = document.getElementById('activities-container');
+
+        // Define activities for each destination
+        const activitiesMap = {
+            manali: [
+                { id: 'adventure', label: 'Adventure (Bungee, Zip Line)' },
+                { id: 'hiking', label: 'Hiking & Nature' }
+            ],
+            goa: [
+                { id: 'beach', label: 'Beach Activities' },
+                { id: 'cultural', label: 'Cultural Tours' }
+            ],
+            delhi: [
+                { id: 'cultural', label: 'Cultural Tours' },
+                { id: 'adventure', label: 'Adventure (City Exploration)' }
+            ],
+            jaipur: [
+                { id: 'cultural', label: 'Cultural Tours' },
+                { id: 'hiking', label: 'Hiking & Nature' }
+            ],
+            kerala: [
+                { id: 'beach', label: 'Beach Activities' },
+                { id: 'hiking', label: 'Hiking & Nature' },
+                { id: 'cultural', label: 'Cultural Tours' }
+            ],
+            darjeeling: [
+                { id: 'hiking', label: 'Hiking & Nature' },
+                { id: 'cultural', label: 'Cultural Tours' }
+            ]
+        };
+
+        // Function to populate activities based on destination
+        function populateActivities(destination) {
+            activitiesContainer.innerHTML = '';
+            if (destination && activitiesMap[destination]) {
+                activitiesMap[destination].forEach(activity => {
+                    const label = document.createElement('label');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = activity.id;
+                    checkbox.value = activity.id;
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(' ' + activity.label));
+                    activitiesContainer.appendChild(label);
+                });
+            }
+        }
+
+        // Event listener for destination change
+        destinationSelect.addEventListener('change', (event) => {
+            const selectedDestination = event.target.value;
+            populateActivities(selectedDestination);
+        });
+
+        customizeForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const destination = document.getElementById('destination').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            const people = parseInt(document.getElementById('people').value);
+            const activities = Array.from(document.querySelectorAll('.activities input:checked'))
+                                    .map(cb => cb.value);
+
+            let basePrice = 5000;
+            const prices = {
+                manali: 6000,
+                goa: 8000,
+                delhi: 3000,
+                jaipur: 12000,
+                kerala: 5000,
+                darjeeling: 20000
+            };
+
+            basePrice = prices[destination] || 5000;
+
+            let activityMultiplier = 1;
+            if (activities.includes('adventure')) activityMultiplier += 0.3;
+            if (activities.includes('cultural')) activityMultiplier += 0.2;
+            if (activities.includes('beach')) activityMultiplier += 0.25;
+            if (activities.includes('hiking')) activityMultiplier += 0.15;
+
+            const finalPrice = Math.round(basePrice * duration * people * activityMultiplier);
+            estimatedPrice.textContent = `Rs ${finalPrice.toLocaleString()}`;
+            priceResult.style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
