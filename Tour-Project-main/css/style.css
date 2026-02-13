@@ -10,7 +10,8 @@
   text-decoration: none;
   text-transform: capitalize;
   transition: 0.2s linear;
-}
+} 
+
 html {
   font-size: 62.5%;
   overflow-x: hidden;
